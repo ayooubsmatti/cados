@@ -1,8 +1,11 @@
 
 from pickle import GET
-from urllib import response
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .serializers import PostSerializer
+from base.models import Post
+
+from base.api import serializers
 
 @api_view(['GET'])
 def getRouter(request):
@@ -12,3 +15,9 @@ def getRouter(request):
 
     }
     return Response(routes)
+
+@api_view(['GET'])
+def getPosts(request):
+    posts = Post.objects.all()
+    serializer = PostSerializer(posts,many=True)
+    return Response(serializer.data)
